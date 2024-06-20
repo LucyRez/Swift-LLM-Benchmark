@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' buildActiveScheme='true' importAppTypes='true'>
+    <pages>
+        <page name='Test1'/>
+        <page name='Test – Reverse'/>
+        <page name='Test – Filter'/>
+        <page name='Test – Frequency'/>
+        <page name='Test – Merge'/>
+        <page name='Test – Date Format'/>
+        <page name='Test – Fetch'/>
+        <page name='Test – Post'/>
+        <page name='Test – Decode'/>
+        <page name='Test – FetchImage'/>
+        <page name='Test – FetchWeather'/>
+        <page name='Test – HStack'/>
+        <page name='Test – GradientButton'/>
+        <page name='Test – StackForm'/>
+        <page name='Test – Slider'/>
+        <page name='Test – List'/>
+        <page name='Test – Background'/>
+        <page name='Test – Segments'/>
+        <page name='Test – CircleProgress'/>
+        <page name='Test – Navigation'/>
+        <page name='Test – Password'/>
+        <page name='Test – Map'/>
+        <page name='Test – ButtonAnimated'/>
+        <page name='Test – CircleAnimated'/>
+        <page name='Test – LabelAnimated'/>
+        <page name='Test – RotationAnimated'/>
+        <page name='Test – HideAnimated'/>
+        <page name='Test – ViewRegistration'/>
+        <page name='Test – ViewProfile'/>
+        <page name='Test – ViewSettings'/>
+        <page name='Test – DashboardView'/>
+        <page name='Test – ViewContact'/>
+        <page name='Test – ViewHome'/>
+        <page name='Test – ViewOnboarding'/>
+    </pages>
+</playground>
