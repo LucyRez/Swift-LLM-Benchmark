@@ -1,0 +1,1003 @@
+output,t/s
+,0
+" 
+
+```swift
+func sortUsersByLastName(users: [User]) -> [User] {
+    return users.sorted { $0.lastName < $1.lastName }
+}
+```",8.615207388261199
+" Here is a Swift function that reverses the elements in an array of integers:
+
+```swift
+func reverseArray(arr: [Int]) -> [Int] {
+    var reversedArr = arr
+    for i in 0..<arr.count/2 {
+        let temp = arr[i]
+        reversedArr[i] = arr[arr.count - i - 1]
+        reversedArr[arr.count - i - 1] = temp
+    }
+    return reversedArr
+}
+
+// Test the function
+let array = [1, 2, 3, 4, 5]
+print(reverseArray(arr: array)) // Output: [5, 4, 3, 2, 1]
+```",8.582951254775077
+" Here's the Swift code to filter out all the even numbers from an array of integers:
+
+```swift
+func filterOutEvenNumbers(numbers: [Int]) -> [Int] {
+  var filteredNumbers = [Int]()
+  for number in numbers {
+    if number % 2 != 0 {
+      filteredNumbers.append(number)
+    }
+  }
+  return filteredNumbers
+}
+```
+
+You can call this function by passing an array of integers as the argument, and it will return a new array containing only the odd numbers from the original array.",8.586247445911766
+" Here's the code in Swift:
+
+```swift
+func charFrequency(input: String) -> [Character: Int] {
+    var freqDict = [Character: Int]()
+    for char in input {
+        if let count = freqDict[char] {
+            freqDict[char] = count + 1
+        } else {
+            freqDict[char] = 1
+        }
+    }
+    return freqDict
+}
+
+let inputString = ""hello world""
+let charFrequency = charFrequency(input: inputString)
+print(""Character frequency count is: \(charFrequency)"")
+```",8.583729281376396
+"
+```swift
+func mergeAndRemoveDuplicates(arr1: [Int], arr2: [Int]) -> [Int] {
+    let set = Set(arr1 + arr2)
+    return Array(set)
+}
+```",8.584425216013264
+" 
+
+```swift
+func formatDate(date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.dateFormat = ""yyyy-MM-dd""
+    return formatter.string(from: date)
+}
+```",8.595876290403083
+" 
+```swift
+import Foundation
+
+func fetchUserData(from urlString: String) {
+    guard let url = URL(string: urlString) else { return }
+    let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let error = error {
+            print(""Error fetching user data: \(error.localizedDescription)"")
+            return
+        }
+        guard let data = data else { return }
+        let jsonString = String(data: data, encoding: .utf8) ?? """"
+        print(jsonString)
+    }
+    task.resume()
+}
+```",8.56753646200726
+" 
+
+```swift
+import Foundation
+
+func sendPOSTRequest(urlString: String, jsonPayload: [String: Any], completion: @escaping (Result<String, Error>) -> Void) {
+    guard let url = URL(string: urlString) else {
+        completion(.failure(NSError(domain: """", code: -1, userInfo: [NSLocalizedDescriptionKey: ""Invalid URL""])))
+        return
+    }
+    
+    let jsonData = try? JSONSerialization.data(withJSONObject: jsonPayload)
+    
+    var request = URLRequest(url: url)
+    request.httpMethod = ""POST""
+    request.addValue(""application/json"", forHTTPHeaderField: ""Content-Type"")
+    request.httpBody = jsonData
+    
+    let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        if let error = error {
+            completion(.failure(error))
+        } else if let data = data {
+            if let jsonString = String(data: data, encoding: .utf8) {
+                completion(.success(jsonString))
+            } else {
+                completion(.failure(NSError(domain: """", code: -1, userInfo: [NSLocalizedDescriptionKey: ""Failed to decode response data""])))
+            }
+        } else {
+            completion(.failure(NSError(domain: """", code: -1, userInfo: [NSLocalizedDescriptionKey: ""No data received from server""])))
+        }
+    }
+    
+    task.resume()
+}
+
+// Example usage:
+let urlString = ""https://example.com/api""
+let jsonPayload: [String: Any] = [""key"": ""value""]
+
+sendPOSTRequest(urlString: urlString, jsonPayload: jsonPayload) { result in
+    switch result {
+    case .success(let response):
+        print(""Response: \(response)"")
+    case .failure(let error):
+        print(""Error: \(error.localizedDescription)"")
+    }
+}
+```",8.492534238628425
+" 
+
+```swift
+import Foundation
+
+struct Post: Decodable {
+    let userId: Int
+    let id: Int
+    let title: String
+    let body: String
+}
+
+func fetchPosts(urlString: String, completion: @escaping ([Post]?, Error?) -> Void) {
+    guard let url = URL(string: urlString) else {
+        completion(nil, NSError(domain: """", code: 0, userInfo: [NSLocalizedDescriptionKey: ""Invalid URL""]))
+        return
+    }
+    
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let error = error {
+            completion(nil, error)
+            return
+        }
+        
+        guard let data = data else {
+            completion(nil, NSError(domain: """", code: 0, userInfo: [NSLocalizedDescriptionKey: ""No data returned""]))
+            return
+        }
+        
+        do {
+            let posts = try JSONDecoder().decode([Post].self, from: data)
+            completion(posts, nil)
+        } catch let error {
+            completion(nil, error)
+        }
+    }.resume()
+}
+
+// Example usage:
+fetchPosts(urlString: ""https://jsonplaceholder.typicode.com/posts"") { (posts, error) in
+    if let posts = posts {
+        print(""Fetched \(posts.count) posts."")
+        for post in posts {
+            print(""\(post.title): \(post.body)"")
+        }
+    } else if let error = error {
+        print(""Error fetching posts: \(error.localizedDescription)"")
+    }
+}
+```",6.755448380882115
+" Here is the Swift code for the function:
+
+```swift
+import UIKit
+
+func fetchImageFromURL(urlString: String, imageView: UIImageView) {
+    guard let url = URL(string: urlString) else { return }
+    
+    URLSession.shared.dataTask(with: url) { data, response, error in
+        if let data = data {
+            DispatchQueue.main.async {
+                imageView.image = UIImage(data: data)
+            }
+        } else if let error = error {
+            print(""Error fetching image: \(error.localizedDescription)"")
+        }
+    }.resume()
+}
+```
+
+This function takes a URL string and an instance of `UIImageView` as input parameters. It first checks if the URL is valid using a guard statement. If it's not, the function simply returns without making any network request. 
+
+If the URL is valid, the function initiates a new URLSession data task to download the image data from the given URL. The completion handler of this data task runs on a background thread by default, so we use `DispatchQueue.main.async` to update the image in the main thread. This ensures that the UI is updated properly and doesn't cause any issues.
+
+If there is an error during the network request, it prints out the localized description of the error using `error.localizedDescription`.",6.303912938916811
+" 
+```swift
+import Foundation
+
+struct Weather: Decodable {
+    let main: Main
+}
+
+struct Main: Decodable {
+    let temp: Double
+}
+
+func fetchWeather(urlString: String) {
+    guard let url = URL(string: urlString) else { return }
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let data = data {
+            do {
+                let weather = try JSONDecoder().decode(Weather.self, from: data)
+                print(""Temperature: \(weather.main.temp)"")
+            } catch {
+                print(""Error decoding JSON: \(error)"")
+            }
+        } else if let error = error {
+            print(""Error fetching weather data: \(error)"")
+        }
+    }.resume()
+}
+
+let urlString = ""https://api.openweathermap.org/data/2.5/weather?q=London&appid=your-api-key""
+fetchWeather(urlString: urlString)
+```",6.8208487555121655
+" 
+```swift
+struct ContentView: View {
+    var body: some View {
+        HStack {
+            Circle()
+                .frame(width: 50, height: 50)
+            Text(""Hello, World!"")
+                .fontWeight(.bold)
+                .font(.system(size: 15))
+        }
+    }
+}
+```",7.116833182513198
+" Here is the SwiftUI code for a button with a rounded rectangle shape, a gradient background, and a shadow:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        Button(action: {}) {
+            Text(""Click me"")
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+        }
+        .buttonStyle(GradientButtonStyle())
+    }
+}
+
+struct GradientButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .frame(maxWidth: .infinity, maxHeight: 55)
+            .background(LinearGradient(colors: [Color(""gradient1""), Color(""gradient2"")], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 4)
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+            .preferredColorScheme(.light)
+    }
+}
+```
+
+This code defines a `GradientButtonStyle` struct that conforms to the `ButtonStyle` protocol, and uses it to style a button with rounded corners, a gradient background, and a shadow. The `ContentView` struct contains a button styled using this custom `GradientButtonStyle`. The button displays the text ""Click me"" in bold white text and has a gradient background that transitions from color `gradient1` at the top-leading corner to color `gradient2` at the bottom-trailing corner. The shadow is colored with black opacity 0.1, and there are no offsets.",6.817731970124699
+" Here is the code to create a SwiftUI view with a VStack containing two text fields and a button below them:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var firstTextField = """"
+    @State private var secondTextField = """"
+
+    var body: some View {
+        VStack {
+            TextField(""First Text Field"", text: $firstTextField)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .border(Color.gray, width: 1)
+
+            TextField(""Second Text Field"", text: $secondTextField)
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .border(Color.gray, width: 1)
+
+            Button(action: {
+                print(""Button tapped"")
+            }) {
+                Text(""Submit"")
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+            }
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .background(Color.blue)
+            .cornerRadius(8)
+            .padding()
+        }
+    }
+}
+```
+
+In this code, we define a `ContentView` struct that conforms to the `View` protocol. We use SwiftUI's state variables (`@State`) to keep track of the text input in each text field. The `body` property defines the layout of the view using a VStack containing two TextField views and a Button view. Each text field is styled with padding, leading alignment, and a gray border. The submit button is styled with a blue background, rounded corners, bold font weight, and white foreground color. When tapped, it prints ""Button tapped"" to the console.",6.580814964337664
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var sliderValue = 50.0
+
+    var body: some View {
+        VStack {
+            Slider(value: $sliderValue, in: 0...100)
+            Text(""Current value: \(Int(sliderValue))"")
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",6.642191198492826
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    let items = [""Item 1"", ""Item 2"", ""Item 3""]
+
+    var body: some View {
+        NavigationView {
+            List(items, id: \.self) { item in
+                Text(item)
+            }
+            .navigationBarTitle(""Items"")
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",6.764550587642802
+" To create a toggle switch in SwiftUI, you can use the `Toggle` struct and assign it a binding to control its state. Here's an example code snippet to achieve this:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State var isSwitchOn = false // Binding variable to control the switch state
+
+    var body: some View {
+        VStack {
+            Toggle(""Change background color"", isOn: $isSwitchOn) {
+                // Toggle label
+            }
+            .padding()
+
+            Rectangle()
+                .frame(width: 200, height: 200)
+                .foregroundColor(isSwitchOn ? .blue : .white) // Change background color based on switch state
+        }
+    }
+}
+```
+
+In this code, we define a `@State` variable called `isSwitchOn` to control the state of the toggle. The `Toggle` struct is used to create the toggle switch with the label ""Change background color"" and bind its `isOn` property to our `isSwitchOn` variable using the dollar sign notation (`$`).
+
+Inside the `body`, we have a vertical stack that contains the toggle switch. The rectangle inside the stack changes its background color based on the value of `isSwitchOn`. If the toggle is on, the background color will be blue; otherwise, it will be white.",6.484305319359841
+" Here's the SwiftUI code for a segmented control that displays different text based on the selected segment:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var selectedSegment = 0
+
+    var body: some View {
+        VStack {
+            Picker(""Select Segment"", selection: $selectedSegment) {
+                Text(""Segment 1"").tag(0)
+                Text(""Segment 2"").tag(1)
+                Text(""Segment 3"").tag(2)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+
+            if selectedSegment == 0 {
+                Text(""You've selected Segment 1"")
+            } else if selectedSegment == 1 {
+                Text(""You've selected Segment 2"")
+            } else {
+                Text(""You've selected Segment 3"")
+            }
+        }
+        .padding()
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```
+
+In this code, we're creating a `Picker` view with three segments labeled ""Segment 1"", ""Segment 2"", and ""Segment 3"". We use the `.pickerStyle(SegmentedPickerStyle())` modifier to make it look like a segmented control. The `selectedSegment` state variable is used to keep track of which segment is currently selected.
+
+We then display different text based on the value of `selectedSegment`. If the value is 0, we display ""You've selected Segment 1"". If the value is 1, we display ""You've selected Segment 2"". If the value is 2, we display ""You've selected Segment 3"".
+
+Finally, we use the `.padding()` modifier to add some space around the view.",6.282954761162154
+" 
+```swift
+struct CircularProgressBar: View {
+    @Binding var progressValue: Double
+
+    var body: some View {
+        Circle()
+            .stroke(lineWidth: 20)
+            .foregroundColor(Color.gray)
+            .overlay(
+                GeometryReader { geometry in
+                    Circle()
+                        .trim(from: 0, to: self.progressValue)
+                        .stroke(style: StrokeStyle(lineWidth: 20, lineCap: .round))
+                        .foregroundColor(Color.blue)
+                        .rotationEffect(Angle(degrees: -90))
+                        .padding()
+                }
+            )
+            .animation(.easeInOut)
+    }
+}
+```",6.205777337178768
+" 
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    var body: some View {
+        NavigationView {
+            List(items) { item in
+                NavigationLink(destination: DetailView(item: item)) {
+                    Text(item.name)
+                }
+            }
+            .navigationBarTitle(""Items"")
+        }
+    }
+}
+
+struct Item: Identifiable {
+    let id = UUID()
+    let name: String
+}
+
+struct DetailView: View {
+    let item: Item
+
+    var body: some View {
+        Text(item.name)
+            .font(.largeTitle)
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(""Back"") {
+                        // Handle back button tap
+                    }
+                }
+            }
+    }
+}
+
+let items = [
+    Item(name: ""Item 1""),
+    Item(name: ""Item 2""),
+    Item(name: ""Item 3"")
+]
+```",6.259368168082013
+" Here is the SwiftUI code to create a text field with a secure entry toggle button:
+```swift
+import SwiftUI
+struct ContentView: View {
+    @State private var username = """"
+    @State private var password = """"
+    @State private var showPassword = false
+    var body: some View {
+        VStack(spacing: 20) {
+            TextField(""Username"", text: $username)
+                .textContentType(.username)
+            if #available(iOS 14, *) {
+                SecureField(""Password"", text: $password)
+                    .textContentType(.password)
+            } else {
+                TextField(""Password"", text: $password)
+                    .isSecureTextEntry(!showPassword)
+            }
+            Toggle(""Show Password"", isOn: $showPassword).onTapGesture {
+                self.showPassword.toggle()
+            }
+        }
+        .padding()
+    }
+}
+```
+This code creates a `VStack` with a `TextField` for the username and either a `SecureField` or regular `TextField` for the password depending on iOS version (iOS 14+). There is also a `Toggle` button that can be tapped to show or hide the password. The `@State` variables are used to manage the state of the text fields and toggle button. The `onTapGesture` modifier is used to toggle the `showPassword` variable when the toggle button is tapped.",6.214889495314631
+" 
+
+```swift
+import SwiftUI
+import MapKit
+
+struct LocationView: View {
+    @State private var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 34.052235, longitude: -118.243683), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+
+    var body: some View {
+        Map(coordinateRegion: $region)
+            .edgesIgnoringSafeArea(.all)
+    }
+}
+
+struct LocationView_Previews: PreviewProvider {
+    static var previews: some View {
+        LocationView()
+    }
+}
+```",6.205315943853994
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var scale: CGFloat = 1.0
+
+    var body: some View {
+        Button(action: {
+            self.scale += 0.2 // Increase the scale when button is tapped
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Delay to see the effect of scaling
+                withAnimation(.easeInOut(duration: 1)) {
+                    self.scale = 1.0 // Reset the scale after animation duration
+                }
+            }
+        }) {
+            Text(""Tap me"")
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+                .background(Color.blue)
+                .cornerRadius(10)
+                .scaleEffect(self.scale) // Apply the scale effect to the button
+        }
+    }
+}
+```",6.29892620266892
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var isTapped = false
+    
+    var body: some View {
+        Circle()
+            .fill(isTapped ? Color.red : Color.blue)
+            .frame(width: 100, height: 100)
+            .transition(.opacity)
+            .animation(Animation.easeInOut(duration: 0.5))
+            .onTapGesture {
+                withAnimation {
+                    isTapped.toggle()
+                }
+            }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",6.2027811097770655
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var offset: CGFloat = -200.0
+    let width = UIScreen.main.bounds.width
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            Text(""Tap me!"")
+                .offset(x: offset, y: 0)
+                .gesture(DragGesture()
+                    .onChanged({ value in
+                        self.offset = value.translation.width
+                    })
+                    .onEnded({ _ in
+                        self.offset = -200.0
+                    }))
+            Spacer()
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",6.133248156078414
+" Here is the SwiftUI code for a rectangle that rotates 360 degrees when tapped:
+
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var rotationAngle = 0.0
+
+    var body: some View {
+        Rectangle()
+            .fill(Color.blue)
+            .frame(width: 200, height: 100)
+            .rotationEffect(Angle(degrees: rotationAngle))
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 1.0)) {
+                    self.rotationAngle += 360.0
+                }
+            }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",5.9899670573880135
+" 
+```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State private var showText = false
+
+    var body: some View {
+        VStack {
+            Button(""Tap me"") {
+                showText.toggle()
+            }
+
+            if showText {
+                Text(""Hello, World!"")
+                    .transition(AnyTransition.slide)
+            }
+        }
+    }
+}
+```",6.235197459623161
+" Here is the SwiftUI code for a registration screen with text fields for username, email, and password, a register button, and a picker to select the user's gender:
+
+```swift
+import SwiftUI
+
+struct RegistrationScreen: View {
+    @State private var username = """"
+    @State private var email = """"
+    @State private var password = """"
+    @State private var selectedGender = ""Male""
+    let genders = [""Male"", ""Female""]
+
+    var body: some View {
+        VStack(spacing: 20) {
+            TextField(""Username"", text: $username).textFieldStyle(RoundedBorderTextFieldStyle())
+            TextField(""Email"", text: $email).textFieldStyle(RoundedBorderTextFieldStyle())
+            SecureField(""Password"", text: $password).textFieldStyle(RoundedBorderTextFieldStyle())
+            Picker(""Gender"", selection: $selectedGender) {
+                ForEach(genders, id: \.self) { gender in
+                    Text(gender).tag(gender)
+                }
+            }.pickerStyle(MenuPickerStyle())
+            Button(action: {
+                // Perform registration action here
+            }) {
+                Text(""Register"")
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                    .frame(width: 300, height: 50)
+                    .background(Color.blue)
+                    .clipShape(Capsule())
+            }
+            Spacer()
+        }.padding()
+    }
+}
+
+struct RegistrationScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        RegistrationScreen()
+    }
+}
+```",5.939655669295693
+" 
+```swift
+struct ProfileView: View {
+    var body: some View {
+        VStack(alignment: .center) {
+            Image(""profile-picture"") // Replace with the actual image name or URL
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 100, height: 100)
+                .clipShape(Circle())
+                .padding()
+
+            Text(""John Doe"") // Replace with the actual user's name
+                .font(.title2)
+                .fontWeight(.bold)
+                .padding(.bottom, 5)
+
+            Text(""john@example.com"") // Replace with the actual user's email
+                .font(.subheadline)
+                .foregroundColor(.gray)
+                .padding(.bottom, 10)
+
+            Button(action: { /* Add your log out action here */ }) {
+                Text(""Log Out"")
+                    .font(.title3)
+                    .fontWeight(.medium)
+                    .foregroundColor(.white)
+                    .frame(width: 150, height: 50)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding()
+        }
+    }
+}
+```",5.933126391517899
+" 
+```swift
+import SwiftUI
+
+struct SettingsView: View {
+    @State private var showNotifications = true
+    @State private var useDarkMode = false
+    
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text(""Notifications"")) {
+                    Toggle(isOn: $showNotifications) {
+                        Text(""Receive notifications"")
+                    }
+                }
+                
+                Section(header: Text(""Dark Mode"")) {
+                    Toggle(isOn: $useDarkMode) {
+                        Text(""Use dark mode"")
+                    }
+                }
+                
+                Section(header: Text(""App Version"")) {
+                    Text(""1.0"")
+                }
+            }
+            .navigationBarTitle(""Settings"")
+        }
+    }
+}
+
+struct SettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        SettingsView()
+    }
+}
+```",5.91681082318814
+" Here's the code you can use to create a DashboardView in SwiftUI that meets your requirements:
+
+```swift
+import SwiftUI
+
+struct DashboardView: View {
+    @State var greeting = ""Hello, User!""
+    @State var activities = [""Activity 1"", ""Activity 2"", ""Activity 3""]
+    
+    var body: some View {
+        VStack {
+            Text(greeting)
+                .font(.largeTitle)
+                .padding()
+            
+            List(activities, id: \.self) { activity in
+                Text(activity)
+            }
+            
+            Button(""Refresh"") {
+                // Add your refresh logic here
+                greeting = ""Data refreshed!""
+                activities.removeAll()
+                activities = [""New Activity 1"", ""New Activity 2"", ""New Activity 3""]
+            }
+            .padding()
+        }
+    }
+}
+
+struct DashboardView_Previews: PreviewProvider {
+    static var previews: some View {
+        DashboardView()
+    }
+}
+```
+
+This code creates a DashboardView with a greeting message, a list of recent activities, and a button to refresh the data. The greeting is stored in a `@State` variable, which can be updated to display different messages based on your application logic. Similarly, the activities are also stored in a `@State` variable, which can be modified to display new data when the user refreshes the page. You can add your own refresh logic inside the button action block, such as making an API call or updating the state variables with fresh data from your backend.",5.797611757100235
+" 
+```swift
+import SwiftUI
+
+struct ContactUsScreen: View {
+    @State private var name = """"
+    @State private var message = """"
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text(""Contact Us"")
+                .font(.title)
+                .bold()
+
+            TextField(""Name"", text: $name)
+                .padding()
+                .background(Color.gray.opacity(0.2).cornerRadius(10))
+                .autocapitalization(.words)
+
+            TextEditor(text: $message)
+                .frame(height: 200)
+                .padding()
+                .background(Color.gray.opacity(0.2).cornerRadius(10))
+                .lineSpacing(10)
+
+            Button(""Send"") {
+                // Send the message or name to a server or email address here
+            }
+            .frame(width: 150, height: 50)
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+        }
+        .padding()
+    }
+}
+
+struct ContactUsScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        ContactUsScreen()
+    }
+}
+```",5.771518927380837
+" 
+```swift
+import SwiftUI
+
+struct HomeView: View {
+    var body: some View {
+        Text(""Home"")
+            .font(.largeTitle)
+            .padding()
+    }
+}
+
+struct SearchView: View {
+    var body: some View {
+        Text(""Search"")
+            .font(.largeTitle)
+            .padding()
+    }
+}
+
+struct ProfileView: View {
+    var body: some View {
+        Text(""Profile"")
+            .font(.largeTitle)
+            .padding()
+    }
+}
+
+struct ContentView: View {
+    @State private var selectedTab = 0
+
+    var body: some View {
+        TabView(selection: $selectedTab) {
+            HomeView()
+                .tag(0)
+            SearchView()
+                .tag(1)
+            ProfileView()
+                .tag(2)
+        }
+        .tabItem {
+            Image(systemName: ""house"")
+            Text(""Home"")
+        }
+        .tabItem {
+            Image(systemName: ""magnifyingglass"")
+            Text(""Search"")
+        }
+        .tabItem {
+            Image(systemName: ""person"")
+            Text(""Profile"")
+        }
+    }
+}
+
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+```",5.761396067769896
+" 
+```swift
+import SwiftUI
+
+struct OnboardingView: View {
+    @State private var currentPage = 0
+    let pageCount = 3
+    
+    var body: some View {
+        VStack {
+            TabView(selection: $currentPage) {
+                ForEach(0..<pageCount, id: \.self) { index in
+                    OnboardingPageView(imageName: ""onboarding-\(index + 1)"", description: ""Description for page \(index + 1)"")
+                }
+            }
+            .tabViewStyle(PageTabViewStyle())
+            
+            Button(""Skip Onboarding"") {
+                // Add code here to skip the onboarding process
+            }
+            .padding()
+        }
+    }
+}
+
+struct OnboardingPageView: View {
+    let imageName: String
+    let description: String
+    
+    var body: some View {
+        VStack {
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+            Text(description)
+                .font(.headline)
+                .multilineTextAlignment(.center)
+                .padding()
+        }
+    }
+}
+
+struct OnboardingView_Previews: PreviewProvider {
+    static var previews: some View {
+        OnboardingView()
+    }
+}
+```",5.832412816287544

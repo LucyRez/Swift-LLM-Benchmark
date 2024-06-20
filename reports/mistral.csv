@@ -1,0 +1,717 @@
+output,t/s
+,0
+" ```swift
+func sortUsersByLastName(_ users: [User]) -> [User] {
+    return users.sorted(by: { $0.lastName < $1.lastName })
+}
+```",8.413374862209523
+" func reverseArray(_ array: [Int]) -> [Int] {
+    var reversed = [Int]()
+    for element in array.reversed() {
+        reversed.append(element)
+    }
+    return reversed
+}",8.40675872831725
+" Here's a possible implementation:
+
+```swift
+func filterEvenNumbers(numbers: [Int]) -> [Int] {
+    var filteredNumbers = [Int]()
+    
+    for number in numbers {
+        if number % 2 == 0 {
+            filteredNumbers.append(number)
+        }
+    }
+    
+    return filteredNumbers
+}
+```",8.390742300387467
+" Here's a Swift function that takes a string as input and returns a dictionary with the frequency count of each character in the string:
+```swift
+func charFrequencyCount(string: String) -> [Character: Int] {
+    var frequencyDict = [Character: Int]()
+    
+    for char in string {
+        if let count = frequencyDict[char] {
+            frequencyDict[char] = count + 1
+        } else {
+            frequencyDict[char] = 1
+        }
+    }
+    
+    return frequencyDict
+}
+```",8.38473261087704
+" ```swift func mergeAndRemoveDuplicates(array1: [Int], array2: [Int]) -> [Int] {
+    let mergedArray = array1 + array2
+    let uniqueArray = Array(Set(mergedArray))
+    return uniqueArray
+}
+```",8.394636386991138
+" ```swift
+func formatDate(_ date: Date) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .short
+    dateFormatter.dateFormat = ""yyyy-MM-dd""
+    
+    return dateFormatter.string(from: date)
+}
+```",8.385752387934142
+" ```
+func fetchUserData(urlString: String) {
+    guard let url = URL(string: urlString) else { return }
+    
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let data = data {
+            let string = String(data: data, encoding: .utf8)!
+            print(string)
+        }
+    }.resume()
+}
+```",8.36335307857511
+"
+```swift
+import Foundation
+func sendJSONPOSTRequest(url: String, jsonPayload: [String: Any]) -> String {
+    let data = try! JSONSerialization.data(withJSONObject: jsonPayload, options: [])
+    let request = URLRequest(url: URL(string: url)!)
+    request.httpMethod = ""POST""
+    request.addValue(""application/json"", forHTTPHeaderField: ""Content-Type"")
+    
+    let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+        if let data = data {
+            do {
+                print(String(data: data, encoding: .utf8))
+            } catch {
+                print(""Error: \(error?.localizedDescription ?? ""Unknown error"")"")
+            }
+        } else {
+            print(""Error: No response received"")
+        }
+    }
+    
+    task.resume()
+    
+    return """"
+}
+```",8.32908519140108
+" import Foundation
+```swift
+struct Post {
+    let id: Int
+    let title: String
+    let body: String
+}
+
+func fetchPosts(from urlString: String) -> [Post]? {
+    guard let url = URL(string: urlString) else { return nil }
+    
+    var posts: [Post] = []
+    
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let data = data {
+            do {
+                let decoder = JSONDecoder()
+                let postsData = try decoder.decode([Post].self, from: data)
+                
+                posts = postsData
+            } catch {
+                print(""Error decoding JSON"")
+            }
+        }
+    }.resume()
+    
+    return posts
+}
+```",8.050752272613831
+" ```swift
+func downloadImage(from url: String, imageView: UIImageView) {
+    guard let url = URL(string: url) else { return }
+    
+    URLSession.shared.dataTask(with: url) { (data, response, error) in
+        if let data = data {
+            DispatchQueue.main.async {
+                imageView.image = UIImage(data: data)
+            }
+        }
+    }.resume()
+}
+```",5.779088461281061
+" ```swift
+import Foundation
+struct Weather: Codable {
+    let main: Main
+}
+struct Main: Codable {
+    let temp: Double
+}
+func fetchWeatherData(url: String) async throws -> Weather? {
+    guard let url = URL(string: url) else { return nil }
+    
+    do {
+        let data = try await DataTask(url: url).responseAsString()
+        guard let weather = try JSONDecoder().decode(Weather.self, from: data) else { return nil }
+        print(""Temperature: \(weather.main.temp)"")
+        return weather
+    } catch {
+        print(""Error decoding JSON: \(error)"")
+        throw error
+    }
+}
+let url = ""https://api.openweathermap.org/data/2.5/weather?q=London&appid=YOUR_API_KEY""
+do {
+    try fetchWeatherData(url: url)
+} catch {
+    print(""Failed to fetch weather data."")
+}
+```",4.930636665252482
+,
+,
+"
+```
+struct ContentView : View {
+    @State var firstText = """"
+    @State var secondText = """"
+    var body: some View {
+        VStack {
+            TextField(""Enter First Text"", text: $firstText)
+            TextField(""Enter Second Text"", text: $secondText)
+            Button(action: {
+                // code to handle button action
+            }) {
+                Text(""Submit"")
+                    .fontWeight(.bold)
+            }
+        }
+    }
+}
+```",5.941914184732359
+" ```swift
+struct ContentView: View {
+    @State private var value = 0.5
+    @State private var labelText = String(format: ""%.2f"", value))
+    
+    var body: some View {
+        VStack {
+            Slider(value: $value, in: 0...1)
+                .onChange(changeLabelText)
+            Text(labelText)
+        }
+    }
+    
+    private func changeLabelText() {
+        labelText = String(format: ""%.2f"", value))
+    }
+}
+```",5.900156748976367
+"
+```swift
+struct ListView: View {
+    let items: [String]
+    
+    var body: some View {
+        NavigationView {
+            List(items) { item in
+                Text(item)
+            }
+            .navigationTitle(""List"")
+        }
+    }
+}
+```",5.812552867721141
+" import SwiftUI
+struct ContentView: View {
+var $isToggled = false
+@State private var backgroundColor = .white
+var body: some View {
+Toggle(isOn: $isToggled) {
+Text(""Toggle"")
+.padding()
+.background(isToggled ? Color.blue : Color.white)
+}
+.onChange(of: isToggled) { _ in
+backgroundColor = .blue
+}
+.background(Color(UIColor.systemBackground))
+}
+}",5.744241054670152
+" ```swift
+import SwiftUI
+struct SegmentedControlView: View {
+    @State private var selectedSegment = 0
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView(proxy.size.height) {
+                HStack(spacing: 16) {
+                    ForEach(0..<3) { index in
+                        Text(""Segment \(index + 1)"")
+                            .font(.title2)
+                            .frame(width: proxy.size.width / 4, height: 50)
+                            .onTapGesture {
+                                self.selectedSegment = index
+                            }
+                    }
+                }
+            }
+        }
+    }
+}
+struct ContentView: View {
+    var body: some View {
+        SegmentedControlView()
+    }
+}
+```",5.684690017560748
+" ```swift
+import SwiftUI
+struct CircularProgressBar: View {
+    @State var progressValue: Double = 0.5
+    
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack {
+                Circle()
+                    .stroke(Color.white, lineWidth: 10)
+                    .frame(width: proxy.size.width, height: proxy.size.height)
+                Circle()
+                    .fill(Color.blue)
+                    .frame(width: proxy.size.width * progressValue, height: proxy.size.height * progressValue)
+            }
+        }
+    }
+}
+```",5.7980083130721
+" ```swift
+import SwiftUI
+
+struct ContentView: View {
+    @State var items = [""Item 1"", ""Item 2"", ""Item 3""]
+    
+    var body: some View {
+        NavigationView {
+            List(items) { item in
+                NavigationLink(destination: DetailView(item: item)) {
+                    Text(item)
+                }
+            }
+        }
+    }
+}
+
+struct DetailView: View {
+    @State var item: String
+    
+    var body: some View {
+        Text(""Detail view for \(item)"")
+            .navigationBarTitle(Text(item))
+    }
+}
+```",5.901278906723169
+" ```swift
+import SwiftUI
+struct SecureTextFieldView: View {
+    @State var isSecure: Bool = true
+    @Binding var text: String
+    
+    var body: some View {
+        TextField(text: $text, secureTextEntry: isSecure)
+            .padding()
+            .border(width: 1, style: .roundedBorder)
+            .onTapGesture(perform: {
+                self.isSecure = !self.isSecure
+            })
+            .overlay(
+                HStack(spacing: 5) {
+                    Image(systemName: ""eye"")
+                        .foregroundColor(.gray)
+                    if isSecure {
+                        Text(""Hide"")
+                    } else {
+                        Text(""Show"")
+                    }
+                }
+                .padding(5, 10)
+                .background(Color.white.opacity(0.7))
+            )
+    }
+}
+struct ContentView: View {
+    @State var text = """"
+    
+    var body: some View {
+        ScrollView {
+            SecureTextFieldView(text: $text)
+                .padding()
+        }
+    }
+}
+```",5.730911750965663
+" import SwiftUI import MapKit struct ContentView: View { @State var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194), latitudinalMeters: 1000, longitudinalMeters: 1000) var body: some View { Map(region: region) } }",5.943233362934806
+" import SwiftUI
+struct ContentView : View {
+var body: some View {
+Button(action: {
+// Your button action code here
+}) {
+Text(""Tap me!"")
+.scaleEffect(isTapped ? 1.2 : 1)
+}
+.onTapGesture { self.isTapped = true }
+.onLongPressGesture { self.isTapped = false }
+}
+@State private var isTapped = false
+}",5.924557339088887
+" ```swift
+import SwiftUI
+struct Circle: View {
+    @State var color = .blue
+    
+    var body: some View {
+        GeometryReader { proxy in
+            ZStack(alignment: .center) {
+                Color.white.opacity(0.8)
+                    .frame(maxWidth: proxy.size.width, maxHeight: proxy.size.height)
+                    .cornerRadius(proxy.size.height / 2)
+                Color(UIColor.systemBlue)
+                    .opacity(0.3)
+                    .overlay(
+                        Circle()
+                            .stroke(lineWidth: 2, lineCap: .rounded, lineOpacity: 1.0)
+                    )
+                    .gesture(TapGesture().onChanged { gesture in
+                        if gesture == true {
+                            color = .red
+                        } else {
+                            color = .blue
+                        }
+                    })
+            }
+        }
+    }
+}
+struct ContentView: View {
+    @State var color = Color.blue
+    
+    var body: some View {
+        VStack {
+            Text(""Tap the circle to change its color."")
+                .font(.headline)
+            Circle()
+                .frame(maxWidth: 200, maxHeight: 200)
+                .padding()
+        }
+    }
+}
+```",5.6233807104841835
+" ```swiftimport SwiftUIstruct ContentView: View {    var body: some View {        Text(""Tap me!"")            .foregroundColor(.red)            .padding()            .onTapGesture(perform: {                print(""Label moved horizontally!"")            })            .animation(.default, value: true)    }
+}
+```",5.93679686062182
+,
+" ```swift
+import SwiftUI
+struct ContentView: View {
+    @State private var isTextVisible = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Button(action: {
+                self.isTextVisible.toggle()
+            }) {
+                Text(""Hide/Show Text"")
+                    .padding(10, 20)
+                    .background(Color.blue)
+                    .cornerRadius(10)
+                    .foregroundColor(.white)
+            }
+            
+            if isTextVisible {
+                Text(""Hello World"")
+                    .font(24)
+                    .transition(.slide)
+            }
+        }
+        .padding()
+    }
+}
+```",5.889292121247072
+" import SwiftUI
+
+struct RegistrationScreen: View {
+@State private var username = """"
+@State private var email = """"
+@State private var password = """"
+@State private var gender = ""Male""
+
+var body: some View {
+VStack {
+Text(""Registration"")
+.font(.title1)
+Spacer()
+TextField(""Username"", text: $username)
+.padding()
+TextField(""Email"", text: $email)
+.padding()
+TextField(""Password"", text: $password)
+.padding()
+Picker(""Gender"", selection: $gender) {
+ForEach([""Male"", ""Female""], id: \.self) { gender in
+Text(gender) }
+}
+.padding()
+Button(""Register"") {
+// Implement registration logic here
+}
+.padding()
+}
+.onChange(of: username) { _ in
+// Validation logic for username field
+}
+.onChange(of: email) { _ in
+// Validation logic for email field
+}
+.onChange(of: password) { _ in
+// Validation logic for password field
+}
+.onChange(of: gender) { _ in
+// Validation logic for gender picker
+}
+```
+}
+```
+
+Note that the registration logic, validation logic, and error handling should be implemented separately based on your application's requirements.",5.594302457233782
+" import SwiftUI
+struct ProfileScreen: View {
+var body: some View {
+ProfilePicture()
+Text(username)
+Text(email)
+Button(""Log Out"") {
+// logout function here
+}
+.onAppear {
+username = UserDefaults.standard.string(forKey: ""username"") ?? """"
+email = UserDefaults.standard.string(forKey: ""email"") ?? """"
+}
+}
+struct ProfilePicture: UIViewRepresentable {
+func makeCoordinator() -> Coordinator {
+Coordinator(self)
+}
+class Coordinator: NSObject, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+// handle image selection here
+}
+func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+}
+var parent: ProfilePicture
+init(_ parent: ProfilePicture) {
+self.parent = parent
+}
+func makeUIViewController(context: Context<Self>) -> UIImagePickerController {
+let picker = UIImagePickerController()
+picker.delegate = context.coordinator
+return picker
+}
+@objc func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+picker.dismiss(animated: true, completion: nil)
+context.coordinator?.imagePickerControllerDidCancel(picker)
+}
+@objc func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+picker.dismiss(animated: true, completion: nil)
+context.coordinator?.imagePickerControllerDidCancel(picker)
+}
+}
+struct ContentView_Previews: PreviewProvider {
+static var previews: some View {
+ProfileScreen()
+}
+}",5.411377432351379
+" ```swiftimport SwiftUIimport Localization
+let localizedNotificationTitle = String(NSLocalizedString(""Notification Title"", comment: """"))
+let localizedDarkModeTitle = String(NSLocalizedString(""Dark Mode"", comment: """"))
+struct SettingsView: View {
+    @State private var isNotificationsEnabled = true
+    @State private var isDarkModeEnabled = false
+    
+    var body: some View {
+        NavigationView {
+            ScrollView(.vertical) {
+                SectionHeader(text: Text(localizedNotificationTitle))
+                    .padding()
+                Toggle(isOn: $isNotificationsEnabled) {
+                    Text(""Enable notifications"")
+                }
+                SectionHeader(text: Text(localizedDarkModeTitle))
+                    .padding()
+                Toggle(isOn: $isDarkModeEnabled) {
+                    Text(""Enable dark mode"")
+                }
+                Section(header: Text(localizedDarkModeTitle), content: {
+                    Text(""Version \(Bundle.main.infoDictionary?[""CFBundleShortVersionString""] as? String ?? """")"")
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                })
+            }
+        }
+        .navigationBarTitle(Text(""Settings""))
+    }
+}
+struct SectionHeader: View {
+    let text: Text
+    
+    var body: some View {
+        text
+            .font(.system(size: 18))
+            .bold()
+            .padding()
+    }
+}
+struct Section: View {
+    let header: Text
+    let content: some View
+    
+    var body: some View {
+        VStack {
+            header
+                .font(.system(size: 16))
+                .foregroundColor(.gray)
+                .padding()
+            content
+        }
+        .padding()
+    }
+}
+```",5.49161009222532
+" import SwiftUI
+struct ContentView: View {
+ var body: some View {
+ Text(""Welcome to the Dashboard!"")
+ .font(.largeTitle)
+ .padding()
+ List {
+ Text(""Recent Activity 1"")
+ Text(""Recent Activity 2"")
+ Text(""Recent Activity 3"")
+ }
+ .padding()
+ Button(""Refresh Data"") {
+ // Refresh data code here
+ }
+ .padding()
+}
+}",5.562379720422679
+" ```swift
+import SwiftUI
+
+struct ContactUsView: View {
+    @State private var name = """"
+    @State private var message = """"
+    
+    var body: some View {
+        VStack(spacing: 16) {
+            TextField(""Name"", text: $name)
+                .padding()
+            TextField(""Message"", text: $message)
+                .padding()
+            
+            Button(""Send"") {
+                // Implement send button logic here
+            }
+        }
+    }
+}
+```",5.480895989036816
+" import SwiftUI
+import UIKit
+
+struct ContentView: View {
+
+```swift
+var body: some View {
+    TabView {
+        ForEach(0..<3) { index in
+            TabItem {
+                Text(""Home"")
+                    .onTapGesture {
+                        print(""Tab selected: \(index + 1)"")
+                    }
+            }
+            TabItem {
+                Text(""Search"")
+                    .onTapGesture {
+                        print(""Tab selected: \(index + 2)"")
+                    }
+            }
+            TabItem {
+                Text(""Profile"")
+                    .onTapGesture {
+                        print(""Tab selected: \(index + 3)"")
+                    }
+            }
+        }
+    }
+}
+```
+}
+
+struct ContentView\_Previews: PreviewProvider {
+static var previews: some View {
+ContentView()
+}
+}",5.511875642286619
+" ```swiftimport SwiftUIstruct ContentView: View {    var body: some View {        OnboardingScreen()    }
+}
+struct OnboardingScreen: View {
+    @State private var currentPage = 1
+    @State private var isOnboardingComplete = false
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            ForEach(0..<3) { pageIndex in
+                PageViewItem(pageIndex: pageIndex, isCurrentPage: $currentPage)
+                    .onTapGesture {
+                        if pageIndex == 2 {
+                            isOnboardingComplete = true
+                        } else {
+                            currentPage += 1
+                        }
+                    }
+                Text(""Page \(pageIndex + 1)"")
+                    .font(.headline)
+                    .padding()
+            }
+            Spacer()
+            Button(""Skip Onboarding"") {
+                isOnboardingComplete = true
+            }
+            if isOnboardingComplete {
+                Text(""Onboarding Complete!"")
+                    .font(.headline)
+                    .padding()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color.white)
+            }
+        }
+        .navigationBarTitle(""Onboarding"")
+    }
+}
+struct PageViewItem: View {
+    let pageIndex: Int
+    @Binding var isCurrentPage: Int
+    
+    var body: some View {
+        GeometryReader { proxy in
+            ScrollView(proxy.size.height, showsIndicators: false) {
+                Image(""image-\(pageIndex)"")
+                    .resizable()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                Text(""Description for page \(pageIndex)"")
+                    .font(.subheadline)
+                    .padding()
+            }
+        }
+    }
+}
+```",5.401288312063544
